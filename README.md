@@ -27,7 +27,8 @@ Also, you will need to create your own Azure AD app. You will probably need perm
 
 ## Run the script
 To run the script, simply execute the main file with ```sudo python3 teams-presency.py```. If you start the script the first time, it will ask you for your *Azure Tenant ID* and *Azure Client ID*.
-**Note:** The script requires sudo, elsewise it will fail to run.
+Next it will ask you to register the app with your Azure Active Directory by following the displayed URL and logging in with your Microsoft work credentials. These will be stored in a cache file.
+> **Note:** The script requires sudo, elsewise it will fail to run.
 
 ## Available options
 Get all options with the ```sudo python3 teams-presence.py --help``` command. Included is:
