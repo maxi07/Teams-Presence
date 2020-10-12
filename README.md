@@ -23,6 +23,7 @@ The script includes the checked features, while others are planned:
 
 ## Installation
 To install the script and all the according libraries, clone the repository and run the ```sudo ./install.sh``` command.
+This will install the [UNICORN library](https://github.com/pimoroni/unicorn-hat), install ```python-dev``` and update your packages.
 Also, you will need to create your own Azure AD app. You will probably need permissions from your Azure administrator. As an alternative use the ids from the [original project](https://www.eliostruyf.com/diy-building-busy-light-show-microsoft-teams-presence/).
 
 ## Run the script
