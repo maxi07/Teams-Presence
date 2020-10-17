@@ -534,18 +534,17 @@ if __name__ == '__main__':
 
 		# Check for Weekend
 		now = datetime.now()
-		for i in range(len(workdays)):
-			if not workdays[i] == now.strftime("%A"):
-				print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
-				print()
-				if args.nopulse:
-					switchOff()
-				else:
-					blinkThread = threading.Thread(target=pulse, args=("task",))
-					blinkThread.do_run = True
-					blinkThread.start()
-				countdown(3600)
-				continue
+		if now.strftime("%A") not in workdays:
+			print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
+			print()
+			if args.nopulse:
+				switchOff()
+			else:
+				blinkThread = threading.Thread(target=pulse, args=("task",))
+				blinkThread.do_run = True
+				blinkThread.start()
+			countdown(3600)
+			continue
 
 		# Check for working times
 		if is_time_between(workday_start, workday_end) == False:
