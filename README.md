@@ -15,7 +15,8 @@ The script includes the checked features, while others are planned:
 - [x] Update the status every 30 seconds
 - [x] Turn off LEDs at night
 - [x] Start script with arguments
-- [ ] Check for version number
+- [x] Check for version number
+- [x] Check for weekdays
 
 ## Prerequisites
 - Get Rasbian running with the latest version of Python3
