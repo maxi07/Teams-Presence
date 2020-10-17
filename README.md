@@ -42,7 +42,7 @@ Get all options with the ```sudo python3 teams-presence.py --help``` command. In
    - ```--nopulse``` - Disables pulsing, if after work hours.
 
 ## Original project
-This project is inspired by the [original project] back from April 2020 by Elio Struyf. He did an awesome job with his project, but it felt strange on how complicated everything was by setting up a local webserver and adding homebridge to update a presence light. 
+This project is inspired by the [original project](https://www.eliostruyf.com/diy-building-busy-light-show-microsoft-teams-presence/) back from April 2020 by Elio Struyf. He did an awesome job with his project, but it felt strange on how complicated everything was by setting up a local webserver and adding homebridge to update a presence light. 
 Therefore I took the idea from pulling the presence status, but removing all the web service and homebridge parts. My version of the Teams presence status indicator simply pulls the Microsoft Graph API every 30 seconds and converts the result into a color, which will be displayed by the RGBs.
 
 ## Supported presence types
