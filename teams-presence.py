@@ -64,7 +64,7 @@ except:
 
 # #############
 # Define Var
-version = 1.0
+version = 1.1
 print("Booting v" + str(version))
 
 config = configparser.ConfigParser()
@@ -93,6 +93,7 @@ SCOPES = [
 ]
 workday_start = time(8,00)
 workday_end = time(19,00)
+workdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 width = 0
 height = 0
 blinkThread = None
@@ -530,6 +531,23 @@ if __name__ == '__main__':
 			printwarning("Option:\t\t\t" + "Set display after work to True")
 
 		print("User:\t\t\t" + fullname)
+
+		# Check for Weekend
+		now = datetime.now()
+		for i in range(len(workdays)):
+			if not workdays[i] == now.strftime("%A"):
+				print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
+				print()
+				if args.nopulse:
+					switchOff()
+				else:
+					blinkThread = threading.Thread(target=pulse, args=("task",))
+					blinkThread.do_run = True
+					blinkThread.start()
+				countdown(3600)
+				continue
+
+		# Check for working times
 		if is_time_between(workday_start, workday_end) == False:
 			if after_work == False:
 				print("Work is over for today, grab a beer! \N{beer mug}")
@@ -542,6 +560,10 @@ if __name__ == '__main__':
 					blinkThread.start()
 				countdown(600)
 				continue
+
+		# kill blink thread
+		blinkThread.do_run = False
+		blinkThread.join()
 
 		if jsonresult['activity'] == "Available":
 			print("Teams presence:\t\t" + '\033[32m' + "Available" + '\033[0m')
