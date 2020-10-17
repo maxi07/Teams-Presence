@@ -64,7 +64,7 @@ except:
 
 # #############
 # Define Var
-version = 1.1
+version = 1.2
 print("Booting v" + str(version))
 
 config = configparser.ConfigParser()
@@ -252,7 +252,13 @@ def pulse(arg):
 					unicorn.set_pixel(x, y, 102, 255, 255)
 					unicorn.show()
 			sleep(0.05)
-		sleep(30)
+		s = 30
+		while s > 0:
+			if getattr(t, "do_run", True) == True:
+				s = s - 1
+				sleep(1)
+			else:
+				break
 
 def switchBlue() :
 	red = 0
