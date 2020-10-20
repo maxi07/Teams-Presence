@@ -506,6 +506,13 @@ if __name__ == '__main__':
 
 		trycount = 0
 
+		# Check for jsonresult
+                if jsonresult == '':
+                        printerror("JSON result is empty! Will try again.")
+                        printerror(jsonresult)
+                        countdown(5)
+                        continue
+
 		# Stop random blinking
 		blinkThread.do_run = False
 		blinkThread.join()
