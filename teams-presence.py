@@ -540,6 +540,7 @@ if __name__ == '__main__':
 
 		# Check for Weekend
 		now = datetime.now()
+
 		if now.strftime("%A") not in workdays:
 			print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
 			print()
@@ -569,6 +570,7 @@ if __name__ == '__main__':
 		# kill blink thread
 		blinkThread.do_run = False
 		blinkThread.join()
+
 
 		if jsonresult['activity'] == "Available":
 			print("Teams presence:\t\t" + '\033[32m' + "Available" + '\033[0m')
