@@ -396,9 +396,10 @@ def Authorize():
 			print(flow['message'])
 			result = app.acquire_token_by_device_flow(flow)
 			token = result['access_token']
-			y = result.json()
-			print("Welcome " + y['givenName'] + "!")
-			fullname = y['givenName'] + " " + y['surname']
+			print("Aquired token")
+			token_claim = result['id_token_claims']
+			print("Welcome " + token_claim.get('name') + "!")
+			fullname = token_claim.get('name')
 			return True
 		if 'access_token' in result:
 			token = result['access_token']
@@ -419,7 +420,7 @@ def Authorize():
 		else:
 			raise Exception('no access token in result')
 	except Exception as e:
-		printerror("Failed to authenticate. " + e)
+		printerror("Failed to authenticate. " + str(e))
 		sleep(2)
 		return False
 
@@ -486,10 +487,9 @@ if __name__ == '__main__':
 				printerror("MS Graph URL is invalid!")
 				exit(5)
 			elif err.response.status_code == 401:
-				if blinkThread.do_run == False:
-					blinkThread = threading.Thread(target=blinkRandom, args=("task",))
-					blinkThread.do_run = True
-					blinkThread.start()
+				blinkThread = threading.Thread(target=blinkRandom, args=("task",))
+				blinkThread.do_run = True
+				blinkThread.start()
 
 				trycount = trycount + 1
 				printerror("MS Graph is not authorized. Please reauthorize the app (401). Trial count: " + str(trycount))
@@ -507,15 +507,17 @@ if __name__ == '__main__':
 		trycount = 0
 
 		# Check for jsonresult
-                if jsonresult == '':
-                        printerror("JSON result is empty! Will try again.")
-                        printerror(jsonresult)
-                        countdown(5)
-                        continue
+		if jsonresult == '':
+			printerror("JSON result is empty! Will try again.")
+			printerror(jsonresult)
+			countdown(5)
+			continue
 
 		# Stop random blinking
-		blinkThread.do_run = False
-		blinkThread.join()
+		if blinkThread != None :
+			blinkThread.do_run = False
+			blinkThread.join()
+#			blinkThread = None
 
 		# Get CPU temp
 		cpu = CPUTemperature()
@@ -573,11 +575,6 @@ if __name__ == '__main__':
 					blinkThread.start()
 				countdown(600)
 				continue
-
-		# kill blink thread
-		blinkThread.do_run = False
-		blinkThread.join()
-
 
 		if jsonresult['activity'] == "Available":
 			print("Teams presence:\t\t" + '\033[32m' + "Available" + '\033[0m')
