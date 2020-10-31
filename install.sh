@@ -8,4 +8,6 @@ sudo apt-get update
 echo Installing Python3 dev
 sudo apt-get install python3-pip python-dev
 echo Installing UNICORN pHAT library
-sudo pip install unicornhat
+sudo pip3 install unicornhat
+echo Installing qrcode module
+sudo pip3 install pyqrcode
