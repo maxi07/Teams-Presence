@@ -53,6 +53,7 @@ try:
 	from datetime import datetime, time
 	from signal import signal, SIGINT
 	from gpiozero import CPUTemperature
+	import pyqrcode
 except ModuleNotFoundError as ex:
 	printerror("The app could not be started.")
 	printerror("Please run 'sudo ./install.sh' first.")
@@ -107,8 +108,6 @@ fullname = ''
 brightness = 0.5
 sleepValue = 30 # seconds
 # #############
-
-
 
 # Check for arguments
 parser = argparse.ArgumentParser()
@@ -380,6 +379,11 @@ def Authorize():
 			result = app.acquire_token_silent(SCOPES, account=accounts[0])
 
 		if result is None:
+			# Create QR code
+			qr = pyqrcode.create("https://microsoft.com/devicelogin")
+			print(text.terminal(module_color=0, background=231, quiet_zone=1))
+
+			# Initiate flow
 			flow = app.initiate_device_flow(scopes=SCOPES)
 			if 'user_code' not in flow:
 				raise Exception('Failed to create device flow')
