@@ -91,8 +91,8 @@ SCOPES = [
     'User.Read',
     'User.ReadBasic.All'
 ]
-workday_start = time(8,00)
-workday_end = time(19,00)
+workday_start = time(8)
+workday_end = time(19)
 workdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
 width = 0
 height = 0
@@ -141,7 +141,6 @@ if args.brightness:
 	printwarning("Option: Brightness set to " + str(brightness))
 
 if args.afterwork:
-	after_work = True
 	printwarning("Option: Set after work to true")
 
 #Handles Ctrl+C
@@ -230,35 +229,26 @@ def setColor(r, g, b, brightness, speed) :
 			unicorn.set_pixel(x, y, r, g, b)
 			unicorn.show()
 
-def pulse(arg):
-	t = threading.currentThread()
-	while getattr(t, "do_run", True):
-		for b in range(0, 7):
-			blockPrint()
-			unicorn.brightness(b/10)
-			enablePrint()
-			for y in range(height):
-				for x in range(width):
-					unicorn.set_pixel(x, y, 102, 255, 255)
-					unicorn.show()
-			sleep(0.05)
-		sleep(1)
-		for b in range(6, 0, -1):
-			blockPrint()
-			unicorn.brightness(b/10)
-			enablePrint()
-			for y in range(height):
-				for x in range(width):
-					unicorn.set_pixel(x, y, 102, 255, 255)
-					unicorn.show()
-			sleep(0.05)
-		s = 30
-		while s > 0:
-			if getattr(t, "do_run", True) == True:
-				s = s - 1
-				sleep(1)
-			else:
-				break
+def pulse():
+	for b in range(0, 7):
+		blockPrint()
+		unicorn.brightness(b/10)
+		enablePrint()
+		for y in range(height):
+			for x in range(width):
+				unicorn.set_pixel(x, y, 102, 255, 255)
+				unicorn.show()
+		sleep(0.05)
+	sleep(1)
+	for b in range(6, 0, -1):
+		blockPrint()
+		unicorn.brightness(b/10)
+		enablePrint()
+		for y in range(height):
+			for x in range(width):
+				unicorn.set_pixel(x, y, 102, 255, 255)
+				unicorn.show()
+		sleep(0.05)
 
 def switchBlue() :
 	red = 0
@@ -424,6 +414,60 @@ def Authorize():
 		sleep(2)
 		return False
 
+# Check for Weekend
+def check_weekend():
+	# Get CPU temp
+	cpu = CPUTemperature()
+
+	now = datetime.now()
+	while now.strftime("%A") not in workdays:
+		os.system('clear')
+		print("============================================")
+		print("            MSFT Teams Presence")
+		print("============================================")
+		print()
+		now = datetime.now()
+		print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
+		cpu_r = round(cpu.temperature, 2)
+		print("Current CPU:\t\t" + str(cpu_r) + "°C")
+
+		print()
+		if args.nopulse:
+			switchOff()
+		else:
+			pulse()
+
+		countdown(30)
+
+
+# Check for working hours
+def check_workingtimes():
+	if args.afterwork:
+		return
+
+	# Get CPU temp
+	cpu = CPUTemperature()
+
+	while is_time_between(workday_start, workday_end) == False:
+		os.system('clear')
+		print("============================================")
+		print("            MSFT Teams Presence")
+		print("============================================")
+		print()
+		now = datetime.now()
+		print("Work is over for today, grab a beer! \N{beer mug}")
+		cpu_r = round(cpu.temperature, 2)
+		print("Current CPU:\t\t" + str(cpu_r) + "°C")
+		print()
+
+		if args.nopulse:
+			switchOff()
+		else:
+			pulse()
+		countdown(30)
+
+
+
 #Main
 if __name__ == '__main__':
 	# Tell Python to run the handler() function when SIGINT is recieved
@@ -466,7 +510,12 @@ if __name__ == '__main__':
 	blinkThread.join()
 
 	trycount = 0
+
 	while True:
+		check_weekend()
+		check_workingtimes()
+
+		# Check network
 		if is_connected() == False:
 			printerror("No network is connected. Waiting for reconnect.")
 			countdown(30)
@@ -517,7 +566,6 @@ if __name__ == '__main__':
 		if blinkThread != None :
 			blinkThread.do_run = False
 			blinkThread.join()
-#			blinkThread = None
 
 		# Get CPU temp
 		cpu = CPUTemperature()
@@ -547,34 +595,7 @@ if __name__ == '__main__':
 
 		print("User:\t\t\t" + fullname)
 
-		# Check for Weekend
-		now = datetime.now()
 
-		if now.strftime("%A") not in workdays:
-			print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
-			print()
-			if args.nopulse:
-				switchOff()
-			else:
-				blinkThread = threading.Thread(target=pulse, args=("task",))
-				blinkThread.do_run = True
-				blinkThread.start()
-			countdown(3600)
-			continue
-
-		# Check for working times
-		if is_time_between(workday_start, workday_end) == False:
-			if after_work == False:
-				print("Work is over for today, grab a beer! \N{beer mug}")
-				print()
-				if args.nopulse:
-					switchOff()
-				else:
-					blinkThread = threading.Thread(target=pulse, args=("task",))
-					blinkThread.do_run = True
-					blinkThread.start()
-				countdown(600)
-				continue
 
 		if jsonresult['activity'] == "Available":
 			print("Teams presence:\t\t" + '\033[32m' + "Available" + '\033[0m')
@@ -601,8 +622,8 @@ if __name__ == '__main__':
 			print("Teams presence:\t\t" + "Offline")
 			switchPink()
 		elif jsonresult['activity'] == "Inactive":
-                        print("Teams presence:\t\t" + "Inactive")
-                        switchGreen()
+                        print("Teams presence:\t\t" + '\033[33m' + "Inactive" + '\033[0m')
+                        switchYellow()
 		elif jsonresult['activity'] == "InAMeeting":
                         print("Teams presence:\t\t" + '\033[31m' + "In a meeting" + '\033[0m')
                         switchRed()
