@@ -1,7 +1,7 @@
 ##!/usr/bin/env python
 # Python script to show Teams presence status on led
 # Author: Maximilian Krause
-# Date 29.09.2020
+# Date 04.11.2020
 
 # Define Error Logging
 def printerror(ex):
@@ -65,7 +65,7 @@ except:
 
 # #############
 # Define Var
-version = 1.2
+version = 1.3
 print("Booting v" + str(version))
 
 config = configparser.ConfigParser()
