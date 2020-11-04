@@ -9,6 +9,8 @@ It supports a variety of presence types, eg.
 
 The Python script pulls the Microsoft Teams presence by using the Microsoft Graph API every 30 seconds and prints the result to console. The presence object will then be converted to a color, whill is displayed with the pHAT.
 
+<img src="https://raw.githubusercontent.com/maxi07/Teams-Presence/master/doc/teams-presence.gif" align="center" width="800"/>
+
 ## Features
 The script includes the checked features, while others are planned:
 - [x] Display the current Microsoft Teams presence as RGB
