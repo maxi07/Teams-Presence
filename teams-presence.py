@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+##!/usr/bin/env python
 # Python script to show Teams presence status on led
 # Author: Maximilian Krause
 # Date 29.09.2020
@@ -105,7 +105,7 @@ globalBlue = 0
 token=''
 points = []
 fullname = ''
-brightness = 0.5
+brightness_led = 0.5
 sleepValue = 30 # seconds
 # #############
 
@@ -220,8 +220,8 @@ def setColor(r, g, b, brightness, speed) :
 	globalGreen = g
 	globalBlue = b
 
-	if brightness != '' :
-		unicorn.brightness(brightness)
+	if brightness == '' :
+		unicorn.brightness(brightness_led)
 
 	for y in range(height):
 		for x in range(width):
@@ -418,28 +418,32 @@ def Authorize():
 		sleep(2)
 		return False
 
-# Check for Weekend
-def check_weekend():
+def printHeader():
 	# Get CPU temp
 	cpu = CPUTemperature()
 
+	os.system('clear')
+	print("============================================")
+	print("            MSFT Teams Presence")
+	print("============================================")
+	print()
+	cpu_r = round(cpu.temperature, 2)
+	print("Current CPU:\t\t" + str(cpu_r) + "°C")
+
+
+# Check for Weekend
+def check_weekend():
 	now = datetime.now()
 	while now.strftime("%A") not in workdays:
-		os.system('clear')
-		print("============================================")
-		print("            MSFT Teams Presence")
-		print("============================================")
-		print()
+		printHeader()
 		now = datetime.now()
 		print("It's " + now.strftime("%A") + ", weekend! Grab more beer! \N{beer mug}")
-		cpu_r = round(cpu.temperature, 2)
-		print("Current CPU:\t\t" + str(cpu_r) + "°C")
-
 		print()
 		if args.nopulse:
 			switchOff()
 		else:
-			pulse()
+			pulsethread = threading.Thread(target=pulse)
+			pulsethread.start()
 
 		countdown(30)
 
@@ -453,21 +457,17 @@ def check_workingtimes():
 	cpu = CPUTemperature()
 
 	while is_time_between(workday_start, workday_end) == False:
-		os.system('clear')
-		print("============================================")
-		print("            MSFT Teams Presence")
-		print("============================================")
-		print()
+		printHeader()
 		now = datetime.now()
 		print("Work is over for today, grab a beer! \N{beer mug}")
-		cpu_r = round(cpu.temperature, 2)
-		print("Current CPU:\t\t" + str(cpu_r) + "°C")
 		print()
 
 		if args.nopulse:
 			switchOff()
 		else:
-			pulse()
+			pulsethread = threading.Thread(target=pulse)
+			pulsethread.start()
+
 		countdown(30)
 
 
