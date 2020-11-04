@@ -1,13 +1,13 @@
 # Teams Presence for Raspberry Pi
-An open source python script to display your Microsoft Teams presence to an RGB LED panel. This project uses an [Unicorn pHAT for Raspberry Pi Zero](https://shop.pimoroni.com/products/unicorn-phat) combined with the latest version of the Microsoft Graph API.
-It supports a variety of presence types, eg.
+An open source python script to display your Microsoft Teams presence to an RGB LED panel. This project uses an [Unicorn pHAT for Raspberry Pi Zero](https://shop.pimoroni.com/products/unicorn-phat) combined with the latest version of the [Microsoft Graph API](https://docs.microsoft.com/de-de/graph/overview).
+It supports a variety of [presence types](https://docs.microsoft.com/de-de/graph/api/resources/presence?view=graph-rest-beta), eg.
    - Available = ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) Green
    - Busy = ![#f03c15](https://via.placeholder.com/15/f03c15/000000?text=+) Red
    - Away = ![#FFF333](https://via.placeholder.com/15/FFF333/000000?text=+) Yellow
    - Out of office = ![#C433FF](https://via.placeholder.com/15/C433FF/000000?text=+) Purple
    - and a lot more!
 
-The Python script pulls the Microsoft Teams presence by using the Microsoft Graph API every 30 seconds and prints the result to console. The presence object will then be converted to a color, whill is displayed with the pHAT.
+The Python script pulls the Microsoft Teams presence by using the [Microsoft Graph API](https://docs.microsoft.com/de-de/graph/overview) every 30 seconds and prints the result to console. The presence object will then be converted to a color, which is displayed with the pHAT.
 
 <img src="https://raw.githubusercontent.com/maxi07/Teams-Presence/master/doc/teams-presence.gif" align="center" width="800"/>
 
@@ -20,9 +20,16 @@ The script includes the checked features, while others are planned:
 - [x] Check for version number
 - [x] Check for weekdays
 
+The difference of this solution in comparison to my original inspiration is that my app
+- has **no heavy web servers** running in the background
+- no need for installing homebridge
+- no need for writing custom plugins
+- has a simple download and registration process.
+
 ## Prerequisites
 - Get Rasbian running with the latest version of Python3
-- Solder your pHAT with your Raspberry Pi
+- Solder your [Unicorn pHAT](https://shop.pimoroni.com/products/unicorn-phat) with your Raspberry Pi
+- *Optionally* use a [diffuser](https://shop.pimoroni.com/products/phat-diffuser) to make the result more attractive
 
 ## Installation
 To install the script and all the according libraries, clone the repository and run the ```sudo ./install.sh``` command.
@@ -36,12 +43,12 @@ Next it will ask you to register the app with your Azure Active Directory by fol
 
 ## Available options
 Get all options with the ```sudo python3 teams-presence.py --help``` command. Included is:
-   - ```--help``` - prints the help dialog
-   - ```--version``` - prints the version number of the script
-   - ```--refresh``` - sets the refresh value in seconds. Must be greater than 10 seconds.
-   - ```--brightness``` - Sets the brightness of your pHAT. Must be between 0.1 and 1.
-   - ```--afterwork``` - Check for presence after working hours.
-   - ```--nopulse``` - Disables pulsing, if after work hours.
+   - ```--help``` Prints the help dialog
+   - ```--version``` Prints the version number of the script
+   - ```--refresh``` Sets the refresh value in seconds. Must be greater than 10 seconds.
+   - ```--brightness``` Sets the brightness of your pHAT. Must be between 0.1 and 1.
+   - ```--afterwork``` Check for presence after working hours.
+   - ```--nopulse``` Disables pulsing, if after work hours.
 
 ## Original project
 This project is inspired by the [original project](https://www.eliostruyf.com/diy-building-busy-light-show-microsoft-teams-presence/) back from April 2020 by Elio Struyf. He did an awesome job with his project, but it felt strange on how complicated everything was by setting up a local webserver and adding homebridge to update a presence light. 
