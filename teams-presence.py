@@ -200,7 +200,7 @@ def is_connected():
 def checkUpdate():
 	updateUrl = "https://raw.githubusercontent.com/maxi07/Teams-Presence/master/doc/version"
 	try:
-		f = requests.get(updateUrl)
+		f = requests.get(updateUrl, timeout=10)
 		latestVersion = float(f.text)
 		if latestVersion > version:
 			printwarning("There is an update available.")
@@ -398,7 +398,7 @@ def Authorize():
 		if 'access_token' in result:
 			token = result['access_token']
 			try:
-				result = requests.get(f'{ENDPOINT}/me', headers={'Authorization': 'Bearer ' + result['access_token']})
+				result = requests.get(f'{ENDPOINT}/me', headers={'Authorization': 'Bearer ' + result['access_token']}, timeout=5)
 				result.raise_for_status()
 				y = result.json()
 				fullname = y['givenName'] + " " + y['surname']
@@ -411,6 +411,8 @@ def Authorize():
 				elif err.response.status_code == 401:
 					printerror("MS Graph is not authorized. Please reauthorize the app (401).")
 					return False
+			except requests.exceptions.Timeout as timeerr:
+				printerror("The authentication request timed out. " + str(timeerr))
 		else:
 			raise Exception('no access token in result')
 	except Exception as e:
@@ -531,9 +533,13 @@ if __name__ == '__main__':
 		jsonresult = ''
 
 		try:
-			result = requests.get(f'https://graph.microsoft.com/beta/me/presence', headers=headers)
+			result = requests.get(f'https://graph.microsoft.com/beta/me/presence', headers=headers, timeout=5)
 			result.raise_for_status()
 			jsonresult = result.json()
+
+		except requests.exceptions.Timeout as timeerr:
+			printerror("The request for Graph API timed out! " + str(timeerr))
+			continue
 
 		except requests.exceptions.HTTPError as err:
 			if err.response.status_code == 404:
