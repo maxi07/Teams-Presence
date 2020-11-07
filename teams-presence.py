@@ -447,7 +447,7 @@ def check_weekend():
 			pulsethread = threading.Thread(target=pulse)
 			pulsethread.start()
 
-		countdown(30)
+		countdown(3600)
 
 
 # Check for working hours
@@ -470,7 +470,7 @@ def check_workingtimes():
 			pulsethread = threading.Thread(target=pulse)
 			pulsethread.start()
 
-		countdown(30)
+		countdown(3600)
 
 
 
