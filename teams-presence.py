@@ -65,7 +65,7 @@ except:
 
 # #############
 # Define Var
-version = 1.3
+version = 1.4
 print("Booting v" + str(version))
 
 config = configparser.ConfigParser()
