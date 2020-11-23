@@ -381,7 +381,7 @@ def Authorize():
 		if result is None:
 			# Create QR code
 			qr = pyqrcode.create("https://microsoft.com/devicelogin")
-			print(text.terminal(module_color=0, background=231, quiet_zone=1))
+			print(qr.terminal(module_color=0, background=231, quiet_zone=1))
 
 			# Initiate flow
 			flow = app.initiate_device_flow(scopes=SCOPES)
