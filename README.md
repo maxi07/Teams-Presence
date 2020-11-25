@@ -1,4 +1,7 @@
 # Teams Presence for Raspberry Pi
+[![PyPI license](https://img.shields.io/pypi/l/ansicolortags.svg)](https://pypi.python.org/pypi/ansicolortags/)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/maxi07/Teams-Presence)
+
 An open source python script to display your Microsoft Teams presence to an RGB LED panel. This project uses an [Unicorn pHAT for Raspberry Pi Zero](https://shop.pimoroni.com/products/unicorn-phat) combined with the latest version of the [Microsoft Graph API](https://docs.microsoft.com/de-de/graph/overview).
 It supports a variety of [presence types](https://docs.microsoft.com/de-de/graph/api/resources/presence?view=graph-rest-beta), eg.
    - Available = ![#c5f015](https://via.placeholder.com/15/c5f015/000000?text=+) Green
