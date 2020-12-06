@@ -11,3 +11,7 @@ echo Installing UNICORN pHAT library
 sudo pip3 install unicornhat
 echo Installing qrcode module
 sudo pip3 install pyqrcode
+echo Installing gpiozero 
+sudo pip3 install gpiozero
+echo Installing Microsoft Office authentication library
+sudo pip3 install msal
