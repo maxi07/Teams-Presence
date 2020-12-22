@@ -14,16 +14,16 @@ def printgreen(msg):
 	print('\033[32m' + str(msg) + '\033[0m')
 
 def printyellow(msg):
-	print('\033[33m' + str(warn) + '\033[0m')
+	print('\033[33m' + str(msg) + '\033[0m')
 
 def printred(msg):
-	print('\033[31m' + str(ex) + '\033[0m')
+	print('\033[31m' + str(msg) + '\033[0m')
 
 def printblue(msg):
-	print('\033[34m' + str(ex) + '\033[0m')
+	print('\033[34m' + str(msg) + '\033[0m')
 
 def printblink(msg):
-	print('\033[5m' + str(ex) + '\033[0m')
+	print('\033[5m' + str(msg) + '\033[0m')
 
 import os
 if not os.geteuid() == 0:
