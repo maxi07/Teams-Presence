@@ -1,7 +1,7 @@
 ##!/usr/bin/env python
 # Python script to show Teams presence status on led
 # Author: Maximilian Krause
-# Date 04.11.2020
+# Date 29.05.2021
 
 # Define Error Logging
 def printerror(ex):
@@ -65,7 +65,7 @@ except:
 
 # #############
 # Define Var
-version = 1.4
+version = 1.5
 print("Booting v" + str(version))
 
 config = configparser.ConfigParser()
@@ -81,7 +81,7 @@ else:
 	while not TENANT_ID:
 		TENANT_ID = input("Please enter your Azure tenant id: ")
 	while not CLIENT_ID:
-		CLIENT_ID = input("Please enter your Azure client id: ")
+		CLIENT_ID = input("Please enter your Azure client id (or application ID): ")
 	config["Azure"] = {"Tenant_Id": TENANT_ID, "Client_Id": CLIENT_ID}
 	with open("azure_config.ini", "w") as configfile:
 		config.write(configfile)
@@ -90,7 +90,7 @@ AUTHORITY = 'https://login.microsoftonline.com/' + TENANT_ID
 ENDPOINT = 'https://graph.microsoft.com/v1.0'
 SCOPES = [
     'User.Read',
-    'User.ReadBasic.All'
+    'Presence.Read'
 ]
 workday_start = time(8)
 workday_end = time(19)
@@ -116,6 +116,7 @@ parser.add_argument("--refresh", "-r", help="Sets the refresh value in seconds",
 parser.add_argument("--brightness", "-b", help="Sets the brightness of the LED display. Value must be between 0.1 and 1", type=int)
 parser.add_argument("--afterwork", "-aw", help="Check for presence after working hours", action="store_true")
 parser.add_argument("--nopulse", "-np", help="Disables pulsing, if after work hours", action="store_true")
+parser.add_argument("--weekend", "-w", help="Also checks on weekends", action="store_true")
 
 args = parser.parse_args()
 if args.version:
@@ -138,6 +139,9 @@ if args.brightness:
 		exit(5)
 	brightness = args.brightness
 	printwarning("Option: Brightness set to " + str(brightness))
+
+if args.weekend:
+	printwarning("Option: Set weekend checks to true")
 
 if args.afterwork:
 	printwarning("Option: Set after work to true")
@@ -435,7 +439,16 @@ def printHeader():
 
 # Check for Weekend
 def check_weekend():
+	# Stop random blinking
+	blinkThread.do_run = False
+	blinkThread.join()
+
 	now = datetime.now()
+
+	# Check for weekend option
+	if args.weekend:
+		return
+
 	while now.strftime("%A") not in workdays:
 		printHeader()
 		now = datetime.now()
@@ -533,7 +546,7 @@ if __name__ == '__main__':
 		jsonresult = ''
 
 		try:
-			result = requests.get(f'https://graph.microsoft.com/beta/me/presence', headers=headers, timeout=5)
+			result = requests.get(f'https://graph.microsoft.com/v1.0/me/presence', headers=headers, timeout=5)
 			result.raise_for_status()
 			jsonresult = result.json()
 
@@ -602,6 +615,9 @@ if __name__ == '__main__':
 
 		if args.afterwork:
 			printwarning("Option:\t\t\t" + "Set display after work to True")
+
+		if args.weekend:
+			printwarning("Option:\t\t\t" + "Set weekend checks to True")
 
 		print("User:\t\t\t" + fullname)
 
