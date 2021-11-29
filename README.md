@@ -41,7 +41,7 @@ This will install the [UNICORN library](https://github.com/pimoroni/unicorn-hat)
 Also, you will need to create your own Azure AD app. You will probably need permissions from your Azure administrator. As an alternative use the ids from the [original project](https://www.eliostruyf.com/diy-building-busy-light-show-microsoft-teams-presence/).
 
 ## Run the script
-To run the script, simply execute the main file with ```sudo python3 teams-presency.py```. If you start the script the first time, it will ask you for your *Azure Tenant ID* and *Azure Client ID*.
+To run the script, simply execute the main file with ```sudo python3 teams-presence.py```. If you start the script the first time, it will ask you for your *Azure Tenant ID* and *Azure Client ID*.
 Next it will ask you to register the app with your Azure Active Directory by following the displayed URL and logging in with your Microsoft work credentials. These will be stored in a cache file.
 > **Note:** The script requires sudo, elsewise it will fail to run.
 
