@@ -5,10 +5,10 @@
 
 An open source python script to display your Microsoft Teams presence to an RGB LED panel. This project uses an [Unicorn pHAT for Raspberry Pi Zero](https://shop.pimoroni.com/products/unicorn-phat) combined with the latest version of the [Microsoft Graph API](https://docs.microsoft.com/de-de/graph/overview).
 It supports a variety of [presence types](https://docs.microsoft.com/de-de/graph/api/resources/presence?view=graph-rest-beta), eg.
-   - Available = ![#c5f015](https://via.placeholder.com/15/c5f015/c5f015.png) Green
-   - Busy = ![#f03c15](https://via.placeholder.com/15/f03c15/f03c15.png) Red
-   - Away = ![#FFF333](https://via.placeholder.com/15/FFF333/FFF333.png) Yellow
-   - Out of office = ![#C433FF](https://via.placeholder.com/15/C433FF/C433FF.png) Purple
+   - Available = ![#008000](https://placehold.co/15x15/008000/008000.png) Green
+   - Busy = ![#f03c15](https://placehold.co/15x15/f03c15/f03c15.png) Red
+   - Away = ![#ffde21](https://placehold.co/15x15/ffde21/ffde21.png) Yellow
+   - Out of office = ![#7f00ff](https://placehold.co/15x15/7f00ff/7f00ff.png) Purple
    - and a lot more!
 
 The Python script pulls the Microsoft Teams presence by using the [Microsoft Graph API](https://docs.microsoft.com/de-de/graph/overview) every 30 seconds and prints the result to console. The presence object will then be converted to a color, which is displayed with the pHAT.
